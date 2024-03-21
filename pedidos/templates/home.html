@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container py-5">
+    <section class="card card-body">
+        <h1 class="display-1 text-center">Benjis Coffee</h1>
+        <p>
+            Bro felicidades en tu nuevo emprendimiento, de verdad sigue metiendo mano, y confio que con la ayuda de Dios seguiras siendo, grande, muy grande, mete mano benji estoy super orgulloso de ti men
+        </p>
+        {% if user.is_authenticated %}
+        <div class="text-center">
+            <a href="/signin/" class="btn btn-secondary">
+                Signin
+            </a>
+            <!-- <a href="/signup/" class="btn btn-dark">
+                Signup
+            </a> -->
+        </div>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}

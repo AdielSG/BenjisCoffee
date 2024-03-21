@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h1 class="text-center display-3">Ordenes</h1>
+
+            <ul class="list-group">
+                {% for order in orders %}
+                {% if not order.Completado %}
+                <a class="list-group-item" href="{% url 'order_detail' order.id %}">
+                    <h1 class="fw-bold text-success">{{ order.Orden }}</h1>
+                    <h3>{{ order.Extras }}</h3>
+                    <p>{{ order.Cliente }}</p>
+                    <!-- <p>{{ order.datecompleted|date:'M j Y:i' }}</p> -->
+                </a>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</main>
+{% endblock %}
