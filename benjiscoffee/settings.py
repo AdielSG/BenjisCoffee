@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY") 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower == "true"
@@ -87,7 +87,8 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.parse("postgres://benjis_coffee_user:E7UHrbcxhiLpGlTuJfftiuoptiymDE0Q@dpg-cnuuhvm3e1ms73b44vc0-a.oregon-postgres.render.com/benjis_coffee")
+database_url = os.environ.get("DATABASE_URL")
+DATABASES['default'] = dj_database_url.parse(database_url)
 
 #postgres://benjis_coffee_user:E7UHrbcxhiLpGlTuJfftiuoptiymDE0Q@dpg-cnuuhvm3e1ms73b44vc0-a.oregon-postgres.render.com/benjis_coffee
 
