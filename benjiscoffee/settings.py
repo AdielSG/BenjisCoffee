@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -76,17 +77,18 @@ WSGI_APPLICATION = 'benjiscoffee.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'BC',
-        'USER': 'sa',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',  # If using a remote host
-        'PORT': '',  # If using a custom port
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Adjust driver version as needed
-        },
-    },
+        'ENGINE': 'django.db.backends.postgresql', # Motor de base de datos
+        'NAME': 'BC',      # Nombre de la base de datos
+        'USER': 'postgres',                      # Usuario de la base de datos
+        'PASSWORD': '1234',               # Contraseña del usuario
+        'HOST': 'localhost',                       # Dirección del servidor de la base de datos (puedes cambiarla si tu base de datos está en un servidor remoto)
+        'PORT': '5432',                            # Puerto por defecto de PostgreSQL
+    }
 }
+
+DATABASES['default'] = dj_database_url.parse("postgres://benjis_coffee_user:E7UHrbcxhiLpGlTuJfftiuoptiymDE0Q@dpg-cnuuhvm3e1ms73b44vc0-a.oregon-postgres.render.com/benjis_coffee")
+
+#postgres://benjis_coffee_user:E7UHrbcxhiLpGlTuJfftiuoptiymDE0Q@dpg-cnuuhvm3e1ms73b44vc0-a.oregon-postgres.render.com/benjis_coffee
 
 
 # Password validation
