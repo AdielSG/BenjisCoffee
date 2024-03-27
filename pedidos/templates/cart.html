@@ -6,6 +6,13 @@
 		<div class="row">
 			<div class="col-12">
 				<table class="table table-image">
+					<div>
+						<form action="{% url 'delete_cart' cart.id %}" method="post">
+							{% csrf_token %}
+							<button style="background: transparent; border: none; cursor: pointer;">
+								<i class="fa-solid fa-trash"></i></button>
+						</form>
+					</div>
 					<thead>
 						<tr>
 
@@ -21,7 +28,7 @@
 						<tr>
 
 							<td class="w-25">
-								<img src="{{item.product.picture.url}}" class="img-fluid img-thumbnail" alt="Cafes">
+								<img src="{{item.product.picture}}" class="img-fluid img-thumbnail" alt="Cafes">
 							</td>
 							<td>{{item.product.Nombre}}</td>
 							<td class="fw-bold">${{item.product.Precio}}</td>
@@ -36,56 +43,85 @@
 	</div>
 
 	{% if user.is_staff and not cart.completed %}
-    <div class="container">
-        <form action="{% url 'complete_cart' cart.id %}" method="post">
-            {% csrf_token %}
+	<div class="container">
+		<form action="{% url 'complete_cart' cart.id %}" method="post">
+			{% csrf_token %}
 			<div class="container">
 				<h3 class="fw-bold">Total: ${{cart.total_price}}</h3>
 				<form action="{% url 'complete_cart' cart.id %}" method="post">
 					{% csrf_token %}
 					{% if not cart.completed %}
-						<button class="btn btn-outline-success">Realizar orden</button>
+					<button class="btn btn-outline-success">Realizar orden</button>
 					{% else %}
-						<p>Orden en proceso</p>
+					<p>Orden en proceso</p>
 					{% endif %}
 				</form>
 			</div>
-        </form>
-    </div>
+		</form>
+	</div>
 	{% elif user.is_staff and cart.completed %}
 	<div class="container">
 		<form action="{% url 'complete_client_order' cart.id %}" method="post">
-            {% csrf_token %}
+			{% csrf_token %}
 			<div class="container">
 				<h3 class="fw-bold">Total: ${{cart.total_price}}</h3>
-            <button class="btn btn-outline-info">Completar orden para el cliente</button>
+				<button class="btn btn-outline-info">Completar orden para el cliente</button>
 			</div>
-        </form>
+		</form>
 	</div>
-{% else %}
-    <div class="container">
-        <h3 class="fw-bold">Total: ${{cart.total_price}}</h3>
-        <form action="{% url 'complete_cart' cart.id %}" method="post">
-            {% csrf_token %}
-            {% if not cart.completed %}
-                <button class="btn btn-outline-success">Realizar orden</button>
-                {% elif not cart.listo %}
-				<div class="alert alert-warning" role="alert">
-					Orden en Proceso
-				  </div>
-				{% else %}
-				<div class="alert alert-success" role="alert">
-					Orden Completada
-				  </div>
-            {% endif %}
-        </form>
-    </div>
-{% endif %}
+	{% else %}
+	<div class="container">
+		<h3 class="fw-bold">Total: ${{cart.total_price}}</h3>
+		<form action="{% url 'complete_cart' cart.id %}" method="post">
+			{% csrf_token %}
+			{% if not cart.completed %}
+			<button class="btn btn-outline-success">Realizar orden</button>
+			{% elif not cart.listo %}
+			<div class="alert alert-warning" role="alert">
+				Orden en Proceso
+			</div>
+			{% else %}
+			<div class="alert alert-success" role="alert">
+				Orden Completada
+			</div>
+			{% endif %}
+		</form>
+	</div>
+	{% endif %}
 
 </div>
 </div>
 
 <br><br><br>
+
+<script>
+	jQuery(document).on('click', '.remove-btn', function(e){
+    e.preventDefault();
+    //grab the product id
+    var productid = $(this).data('index');
+
+    $('.remove-btn').click(function() {
+    // Get the product_id from some source, such as a data attribute or input field
+    var product_id = $(this).data('product-id'); // Example: getting from a data attribute
+    // Now you can use product_id
+    $.ajax({
+        url: '/remove_from_cart/',
+        type: 'POST',
+        data: {
+            action: 'post',
+            id: productid // Assuming 'id' is the key expected by the server
+        },
+		headers: {"Content-Type": "application/json", 'X-CSRFTOKEN': csrftoken},
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(xhr, errmsg, err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
+});
+});
+</script>
 
 
 {% endblock content %}

@@ -20,7 +20,7 @@ class Product(models.Model):
     Precio = models.IntegerField()
     Descripcion = models.CharField(max_length=100)
     Disponibilidad = models.BooleanField()
-    picture = models.ImageField(upload_to="img", default="")
+    picture = models.CharField(max_length=4000)
 
     def __str__(self):
         return self.Nombre + '  ' + str(self.Precio) + '  Pesos'

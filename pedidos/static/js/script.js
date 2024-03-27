@@ -44,17 +44,17 @@ const csrftoken = getCookie('csrftoken');
  }
 
 
- let btns1 = document.querySelectorAll(".cartContainer button")
+ let btns1 = document.querySelectorAll(".remove-btn")
 
- btns1.forEach(btn =>{
-    btn.addEventListener("click", addToOrder)
+ btns.forEach(btn =>{
+    btn.addEventListener("click", deleteCart)
  })
 
- function addToOrder(e) {
-    let cart_id = e.target.value
-    let url = "/add_to_order"
+ function deleteCart(e) {
+    let product_id = e.target.value
+    let url = "/remove_from_cart"
 
-    let data ={id:cart_id}
+    let data ={id:product_id}
 
     fetch(url, {
         method: "POST",
@@ -63,10 +63,12 @@ const csrftoken = getCookie('csrftoken');
     })
     .then(res=> res.json())
     .then(data=>{
-        //document.getElementById("num_of_items").innerHTML = data
+        document.getElementById("num_of_items").innerHTML = data
         console.log(data);
     })
     .catch(error=> {
         console.log(error);
     })
  }
+ 
+

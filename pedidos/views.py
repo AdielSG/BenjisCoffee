@@ -244,7 +244,7 @@ def add_to_cart(request):
         print(cartitem)
 
     return JsonResponse(num_of_item, safe=False)
-
+    
 
 @login_required
 def complete_cart(request, cart_id):
@@ -261,3 +261,10 @@ def complete_client_order(request, cart_id):
         cart.listo = True
         cart.save()
     return redirect('orders')
+
+@login_required
+def delete_cart(request, cart_id):
+    cart = get_object_or_404(Cart, id=cart_id)
+    if request.method == 'POST':
+        cart.delete()
+    return redirect('products')

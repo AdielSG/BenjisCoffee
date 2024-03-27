@@ -4,36 +4,19 @@
 <main class="container py-5">
     <section class="card card-body">
         <h1 class="display-1 text-center">Benjis Coffee</h1>
-        <p>
-            ¡Bienvenidos a nuestro refugio de vibras positivas en medio de la naturaleza!
-
-            Imagina este lugar como un santuario para tus sentidos, donde el aroma del café recién molido se mezcla con
-            la brisa fresca del bosque y el sonido calmante del arroyo cercano. Aquí, en nuestro café de acampada, te
-            invitamos a dejar atrás el estrés y sumergirte en una experiencia revitalizante y enriquecedora.
-
-            Cada taza que preparamos es una expresión de amor y pasión por el café, diseñada para elevar tu espíritu y
-            despertar tus sentidos. Ya sea que busques un espresso audaz para iniciar tu día con energía o un latte
-            suave para relajarte al atardecer, estamos aquí para servirte con una sonrisa y buena vibra.
-
-            Nuestro equipo está compuesto por amantes del café y la naturaleza, listos para compartir historias, risas y
-            momentos inolvidables junto al fuego. En este espacio de conexión y camaradería, cada sorbo se convierte en
-            un viaje sensorial que te transporta a un estado de paz y felicidad.
-
-            Así que déjate llevar por la magia de este lugar, sumérgete en la tranquilidad del entorno y disfruta de la
-            deliciosa sensación de estar vivo. En nuestro oasis de café, cada momento es una oportunidad para recargar
-            energías y disfrutar de la belleza que nos rodea.
-
+        <p class="text-center">
             ¡Bienvenidos a nuestro paraíso de vibras positivas y café delicioso!
         </p>
         {% if not user.is_authenticated %}
         <div class="text-center">
             <a href="/signin/" class="btn btn-secondary">
-                Signin
+                Iniciar Sesion
             </a>
-            <!-- <a href="/signup/" class="btn btn-dark">
-                Signup
-            </a> -->
+            <a href="/signup/" class="btn btn-dark">
+                Crear Cuenta
+            </a>
         </div>
+        <img src="/img/Benjis Coffee png.jpeg" alt="">
         {% endif %}
     </section>
 </main>

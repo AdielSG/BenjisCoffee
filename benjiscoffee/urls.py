@@ -40,6 +40,7 @@ urlpatterns = [
     path('cart/client/<int:cart_id>/', views.cart_client, name='cart_client'),
     path('cart/admin/<int:cart_id>/complete/', views.complete_client_order, name='complete_client_order'),
     path('add_to_cart', views.add_to_cart, name='add'),
+    path('cart/<int:cart_id>/delete', views.delete_cart, name='delete_cart'),
     path('cart/<int:cart_id>/complete/', views.complete_cart, name='complete_cart'),
     path('orders/me/', views.my_orders, name='orders_me'),
 ]

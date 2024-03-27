@@ -13,14 +13,16 @@
           <h5 class="card-title">Benjis Coffee</h5>
           <p class="card-text fw-bold">ORDEN NO. {{cart.id}}</p>
           <p class="card-text fw-bold">{{cart.user}}</p>
-          {% if user.is_staff%}
+          {% if user.is_staff and cart.id %}
           <a href="{% url 'cart_admin' cart.id %}">
             <button class="btn btn-success">Ver mas...</button>
           </a>
           {% else %}
+          {% if cart.id %}
           <a href="{% url 'cart_client' cart.id %}">
             <button class="btn btn-success">Ver mas...</button>
           </a>
+          {% endif %}
           {% endif %}
           <!-- <button class="btn btn-success">Añadir</button> -->
         </div>
