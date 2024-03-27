@@ -1,0 +1,91 @@
+{% extends 'base.html' %} {% block content %}
+
+<br><br><br>
+<div class="cartContainer">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<table class="table table-image">
+					<thead>
+						<tr>
+
+							<th scope="col">Articulo</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Precio</th>
+							<th scope="col">Cantidad</th>
+							<th scope="col">Sub-Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in items %}
+						<tr>
+
+							<td class="w-25">
+								<img src="{{item.product.picture.url}}" class="img-fluid img-thumbnail" alt="Cafes">
+							</td>
+							<td>{{item.product.Nombre}}</td>
+							<td class="fw-bold">${{item.product.Precio}}</td>
+							<td>{{item.quantity}}</td>
+							<td class="fw-bold">${{item.price}}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	{% if user.is_staff and not cart.completed %}
+    <div class="container">
+        <form action="{% url 'complete_cart' cart.id %}" method="post">
+            {% csrf_token %}
+			<div class="container">
+				<h3 class="fw-bold">Total: ${{cart.total_price}}</h3>
+				<form action="{% url 'complete_cart' cart.id %}" method="post">
+					{% csrf_token %}
+					{% if not cart.completed %}
+						<button class="btn btn-outline-success">Realizar orden</button>
+					{% else %}
+						<p>Orden en proceso</p>
+					{% endif %}
+				</form>
+			</div>
+        </form>
+    </div>
+	{% elif user.is_staff and cart.completed %}
+	<div class="container">
+		<form action="{% url 'complete_client_order' cart.id %}" method="post">
+            {% csrf_token %}
+			<div class="container">
+				<h3 class="fw-bold">Total: ${{cart.total_price}}</h3>
+            <button class="btn btn-outline-info">Completar orden para el cliente</button>
+			</div>
+        </form>
+	</div>
+{% else %}
+    <div class="container">
+        <h3 class="fw-bold">Total: ${{cart.total_price}}</h3>
+        <form action="{% url 'complete_cart' cart.id %}" method="post">
+            {% csrf_token %}
+            {% if not cart.completed %}
+                <button class="btn btn-outline-success">Realizar orden</button>
+                {% elif not cart.listo %}
+				<div class="alert alert-warning" role="alert">
+					Orden en Proceso
+				  </div>
+				{% else %}
+				<div class="alert alert-success" role="alert">
+					Orden Completada
+				  </div>
+            {% endif %}
+        </form>
+    </div>
+{% endif %}
+
+</div>
+</div>
+
+<br><br><br>
+
+
+{% endblock content %}

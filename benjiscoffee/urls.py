@@ -17,17 +17,31 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from pedidos import views
+from . import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('signup/', views.signup, name='signup'),
     path('orders/', views.orders, name='orders'),
+    path('products/', views.products, name='products'),
     path('orders_completed/', views.orders_completed, name='orders_completed'),
     path('orders/create/', views.create_order, name='create_orders'),
     path('orders/<int:orders_id>/', views.order_detail, name='order_detail'),
+    path('products/<int:products_id>/', views.product_detail, name='product_detail'),
     path('orders/<int:orders_id>/complete', views.complete_order, name='complete_order'),
     path('orders/<int:orders_id>/delete', views.delete_order, name='delete_order'),
     path('logout/', views.signout, name='logout'),
     path('signin/', views.signin, name='signin'),
+
+    path('cart/<int:cart_id>/', views.cart, name='cart'),
+    path('cart/admin/<int:cart_id>/', views.cart_admin, name='cart_admin'),
+    path('cart/client/<int:cart_id>/', views.cart_client, name='cart_client'),
+    path('cart/admin/<int:cart_id>/complete/', views.complete_client_order, name='complete_client_order'),
+    path('add_to_cart', views.add_to_cart, name='add'),
+    path('cart/<int:cart_id>/complete/', views.complete_cart, name='complete_cart'),
+    path('orders/me/', views.my_orders, name='orders_me'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
