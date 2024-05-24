@@ -6,13 +6,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .forms import OrderForm, ProductForm
-from .models import Order, Product, Cart, CartItem, OrderItem
+from .models import Order, Product, Cart, CartItem, OrderItem, Rewards
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
 import json
-
+from django.contrib.sessions.backends.db import SessionStore
 
 # Create your views here.
 
@@ -23,7 +23,10 @@ def home(request):
         context = {"cart": cart}
         return render(request, 'home.html', context)
     else:
-        return render(request, 'home.html')
+        cart = Cart.objects.filter(session_key=request.session.session_key, completed=True).first()
+        
+    context = {"cart": cart}
+    return render(request, 'home.html', context)
 
 def signup(request):
     if request.method == 'GET':
@@ -37,6 +40,8 @@ def signup(request):
                                                 password=request.POST['password1'])
                 user.save()
                 login(request, user)
+                Points = Rewards.objects.create(User=request.user, Quantity = 10)
+                Points.save()
                 return redirect('products')
             except IntegrityError:
                 return render(request, 'signup.html', {
@@ -75,14 +80,29 @@ def my_orders(request):
         context = {"carts": []}
     return render(request, 'orders.html', context)
 
-@login_required
 def products(request):
     products = Product.objects.all()
+    if request.session.session_key is None:
+            request.session.create()
+
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+        points = Rewards.objects.get(User=request.user)
+        context = {"products": products, "cart": cart, "points": points}
+        return render(request, 'products.html', context)
+    else:
+        cart, created = Cart.objects.get_or_create(session_key=request.session.session_key, completed=False)
+        context = {'products': products, 'cart': cart,}
+        return render(request, 'products.html', context)
 
-    context = {"products": products, "cart": cart}
-    return render(request, 'products.html', context)
+  
+def product_admin(request):
+    products = Product.objects.all()
+    if request.user.is_staff:
+        context = {"products": products}
+        return render(request, 'product_admin.html', context)
+    else:
+        return HttpResponse(401, 'No tiene permisos para esta área')
 
 @login_required
 def orders_completed(request):
@@ -180,20 +200,26 @@ def signin(request):
             return redirect('products')
 
 
-def cart(request, cart_id):
-    if request.user.is_authenticated:
+def cart(request, cart_id=None):
+    if cart_id:
         try:
-            # Obtener el carrito activo del usuario
-            cart = Cart.objects.get(user=request.user, pk=cart_id, completed=False)
+            cart = Cart.objects.get(pk=cart_id, completed=False)
             cartitems = cart.cartitems.all()
             context = {"cart": cart, "items": cartitems}
             return render(request, "cart.html", context)
         except Cart.DoesNotExist:
-            # Si no se encuentra un carrito activo, redirigir a la página de productos
             return redirect('products')
     else:
-        # Si el usuario no está autenticado, redirigir a la página de productos
-        return redirect('products')
+        if request.user.is_authenticated:
+            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+            cartitems = cart.cartitems.all()
+            context = {"cart": cart, "items": cartitems}
+            return render(request, "cart.html", context)
+        else:
+            cart, created = Cart.objects.get_or_create(session_key=request.session.session_key, completed=False)
+            cartitems = cart.cartitems.all()
+            context = {"cart": cart, "items": cartitems}
+            return render(request, "cart.html", context)
     
 
 def cart_admin(request, cart_id):
@@ -238,31 +264,70 @@ def add_to_cart(request):
         cartitem.quantity += 1
         cartitem.save()
 
-
         num_of_item = cart.num_of_items
 
         print(cartitem)
+    else:
+        if request.session.session_key is None:
+            request.session.create()
+            
+        cart, created = Cart.objects.get_or_create(session_key=request.session.session_key, completed=False)
+        if request.session.session_key:
+            print(request.session.session_key)
+        else:
+            print('No hay')
+        cartitem, created = CartItem.objects.get_or_create(cart=cart, product=product)
+        cartitem.quantity += 1
+        cartitem.save()
+
+        num_of_item = cart.num_of_items
 
     return JsonResponse(num_of_item, safe=False)
     
 
-@login_required
 def complete_cart(request, cart_id):
-    cart = get_object_or_404(Cart, pk=cart_id, user=request.user)
-    if request.method == 'POST':
-        cart.completed = True
-        cart.save()
-    return redirect('products')
+    if request.user.is_authenticated:
+        cart = get_object_or_404(Cart, pk=cart_id, user=request.user)
+        if request.method == 'POST':
+            cart.completed = True
+            cart.save()
+        return redirect('products')
+    else:
+        cart = get_object_or_404(Cart, pk=cart_id, session_key=request.session.session_key)
+        if request.method == 'POST':
+            cart.completed = True
+            cart.save()
+        return redirect('products')
 
 @login_required
 def complete_client_order(request, cart_id):
     cart = get_object_or_404(Cart, pk=cart_id)
-    if request.method == 'POST':
-        cart.listo = True
-        cart.save()
-    return redirect('orders')
+    
+    # Verificar si el cart tiene un usuario asociado
+    if cart.user is not None:
+        try:
+            get_user = User.objects.get(id=cart.user.id)
+            puntos = get_object_or_404(Rewards, User=get_user)
 
-@login_required
+            if request.method == 'POST':
+                cart.listo = True
+                puntos.Quantity = puntos.Quantity + 10
+                cart.save()
+                puntos.save()
+                
+                return redirect('orders')
+        except User.DoesNotExist:
+            return HttpResponse("User not found", status=404)
+        except Rewards.DoesNotExist:
+            return HttpResponse("Rewards not found for user", status=404)
+    else:
+        if request.method == 'POST':
+            cart.listo = True
+            cart.save()
+            
+            return redirect('orders')
+
+
 def delete_cart(request, cart_id):
     cart = get_object_or_404(Cart, id=cart_id)
     if request.method == 'POST':

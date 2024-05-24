@@ -2,6 +2,7 @@ from .models import Order, Product
 from django import forms
 
 
+
 class OrderForm(forms.ModelForm):
     COFFEE_CHOICES = (
         ('Cappuchino', 'Cappuchino'),
@@ -22,17 +23,9 @@ class OrderForm(forms.ModelForm):
 
 
 class ProductForm(forms.ModelForm):
-    EXTRA_CHOICES = (
-        ('Crema Batida', 'Crema Batida'),
-        ('Chispa de chocolates', 'Chispa de chocolates'),
-        ('Sirup de caramelo', 'Sirup de caramelo'),
-        ('Sirup de chocolate', 'Sirup de chocolate'),
-        ('Ninguno', 'Ninguno'),
-    )
-    Extra = forms.ChoiceField(choices=EXTRA_CHOICES, label='Selecciona un extra', widget=forms.Select())
     class Meta:
         model = Product
-        fields = ['Extra']
+        fields = ['Nombre', 'Precio', 'Descripcion', 'Disponibilidad', 'picture']
         # widgets = {
         #     'Cliente': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite un cliente'}),
         #     'Precio': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Precio'}),

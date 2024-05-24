@@ -3,18 +3,6 @@ from django.contrib.auth.models import User
 import uuid
 # Create your models here.
 
-# class Order(models.Model):
-#     Cliente = models.CharField(max_length=100)
-#     Orden = models.CharField(max_length=100)
-#     Precio = models.IntegerField()
-#     Completado = models.BooleanField(blank=True, default=False)
-#     datecompleted = models.DateTimeField(null=True, blank=True)
-#     Extras = models.CharField(max_length=100 ,blank=True)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.Cliente + ' Pedido ' + self.Orden
-    
 class Product(models.Model):
     Nombre = models.CharField(max_length=100)
     Precio = models.IntegerField()
@@ -27,9 +15,11 @@ class Product(models.Model):
     
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    session_key = models.CharField(max_length=40, null=True, blank=True)
     completed = models.BooleanField(default=False)
     listo = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.id)
@@ -75,3 +65,10 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.product.Nombre
+    
+class Rewards(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    Quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.Quantity)

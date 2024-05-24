@@ -2,18 +2,12 @@
 
 {% block content %}
 
-<h1 class="text-center display-3">Productos</h1>
-{% if user.is_authenticated %}
-<div style="float: right; margin-right: 70px;">
-    <i class="fi fi-sr-coffee-bean size">{{points}}</i>
-</div>
-{% endif %}
+<h1 class="text-center display-3">Productos Admin Site</h1>
 
 <main class="container" style="margin-top: 50px; margin-left: 15%;">
-    <div class="productContainer">
+    <div class="productoContainer">
         <div class="row">
             {% for product in products %}
-            {% if product.Disponibilidad %}
             <div class="col-sm-3 mb-3 mb-sm-0">
                 <div class="card mb-3" style="width: 18rem;">
                     <div class="card-body ">
@@ -22,12 +16,13 @@
                         <p class="card-text fw-bold">{{product.Nombre}}</p>
                         <p class="card-text fw-bold">RD$ {{product.Precio}}</p>
                         <p class="card-text">{{product.Descripcion}}</p>
-                        <button value="{{product.id}}" class="btn btn-success">Agregar al Carrito</button>
+                        <a href="{% url 'product_detail' product.id %}">
+                            <button class="btn btn-success">Modificar</button>
+                        </a>
                         <!-- <button class="btn btn-success">Añadir</button> -->
                     </div>
                 </div>
             </div>
-            {% endif %}
             {% endfor %}
         </div>
     </div>

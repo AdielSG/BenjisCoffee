@@ -26,6 +26,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('orders/', views.orders, name='orders'),
     path('products/', views.products, name='products'),
+    path('admin-site/', views.product_admin, name='product_admin'),
     path('orders_completed/', views.orders_completed, name='orders_completed'),
     path('orders/create/', views.create_order, name='create_orders'),
     path('orders/<int:orders_id>/', views.order_detail, name='order_detail'),

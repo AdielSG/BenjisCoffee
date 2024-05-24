@@ -19,6 +19,16 @@
   <script src="https://kit.fontawesome.com/37cdb8b9f4.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+
+  <style>
+    .size{
+      font-size: 48px;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -42,6 +52,10 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'orders' %}">Ordenes</a>
           </li>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin-site">Admin</a>
+        </li>
           <li class="nav-item">
             {% if cart.id %}
             <a class="nav-link" href="{% url 'cart' cart.id %}">
@@ -90,6 +104,18 @@
           <li class="nav-item">
             <a class="nav-link" href="/signup">Crear Cuenta</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/products">Productos</a>
+          </li>
+          {% if cart %}
+            <a class="nav-link" href="{% url 'cart' cart.id %}">
+              <div class="container">
+                <div>
+                  <i id="num_of_items" class="fa-solid fa-basket-shopping">{{ cart.num_of_items }}</i>
+                </div>
+              </div>
+            </a>
+            {% endif %}
 
           {% endif %}
         </ul>
