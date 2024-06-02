@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-# import os
-# import dj_database_url
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,15 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!*(q=vhwzs^cxah8s1tgp17%hu3t9-6@4pkb_v%qo_4rwnstp-'
-#SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-#DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = []
-#ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -93,8 +90,8 @@ DATABASES = {
     },
 }
 
-# database_url = os.environ.get("DATABASE_URL")
-# DATABASES['default'] = dj_database_url.parse("postgres://benjiscoffee_user:K1DFu9xsGzF6wrhbN45USeJ4SrRQkx5k@dpg-co2c4k8l6cac73blcrt0-a.oregon-postgres.render.com/benjiscoffee")
+database_url = os.environ.get("DATABASE_URL")
+DATABASES['default'] = dj_database_url.parse("postgres://benjiscoffee_user:K1DFu9xsGzF6wrhbN45USeJ4SrRQkx5k@dpg-co2c4k8l6cac73blcrt0-a.oregon-postgres.render.com/benjiscoffee")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -131,11 +128,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR /'static']
+STATICFILES_DIRS = [BASE_DIR/'static']
 
 
 MEDIA_URL = "image/"
-MEDIA_ROOT = BASE_DIR/"static"
+MEDIA_ROOT = BASE_DIR/"media"
 
 LOGIN_URL = '/signin'
 
