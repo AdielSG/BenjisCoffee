@@ -740,17 +740,52 @@ input:focus{
               </div>
           </nav>
           <nav class="header-section__nav-mobile responsive-container">
-              <div class="navbar__logo-div">
+              <!-- <div class="navbar__logo-div">
                   <img class="navbar__logo" src="{% static '/img/Benjis_Coffee.png' %}" alt="Coffee Logo">
-              </div>
+              </div> -->
               <i class="fa-solid fa-bars"></i>
               <div class="navbar__links-div">
-                  <ul class="navbar__links-mobile">
-                      <li><a href="#section-1" class="white-clr">Inicio</a></li>
-                      <li><a href="#section-2" class="white-clr">Productos</a></li>
-                      <li><a href="#section-3" class="white-clr">Carrito</a></li>
-                    <li><a href="#section-5" class="white-clr">Mis Ordenes</a></li>
+                <ul class="navbar__links">
+                    {% if user.is_staff %}
+                    <li>
+                        <a class="white-clr" href="/products">Bienvenido {{request.user.username}}</a>
+                      </li>
+                    <li><a href="/" class="white-clr">Inicio</a></li>
+                    <li><a href="/products" class="white-clr">Productos</a></li>
+                    <li><a href="/admin-site" class="white-clr">Admin</a></li>
+                    <!-- {% if cart.id %}
+                    <li><a href="{% url 'cart' cart.id %}" class="white-clr">{{ cart.num_of_items }}</a></li>
+                    {% endif %} -->
+                    <li><a href="{% url 'orders' %}" class="white-clr">Ordenes</a></li>
+                    <li>
+                        <a class="white-clr" href="/logout">Cerrar Sesion</a>
+                      </li>
+                      {% elif user.is_authenticated %}
+                    <li>
+                        <a class="white-clr" href="/products">Bienvenido {{request.user.username}}</a>
+                      </li>
+                    <li><a href="/" class="white-clr">Inicio</a></li>
+                    <li><a href="/products" class="white-clr">Productos</a></li>
+                    <!-- {% if cart.id %}
+                    <li><a href="{% url 'cart' cart.id %}" class="white-clr">{{ cart.num_of_items }}</a></li>
+                    {% endif %} -->
+                    <li><a href="{% url 'orders' %}" class="white-clr">Ordenes</a></li>
+                    <li>
+                        <a class="white-clr" href="/logout">Cerrar Sesion</a>
+                    </li>
+                    
+                      {% else %}
+                    <li>
+                        <a class="white-clr" href="/signin">Iniciar Sesion</a>
+                      </li>
+                      <li>
+                        <a class="white-clr" href="/signup">Crear Cuenta</a>
+                      </li>
+                      <li>
+                        <a class="white-clr" href="/products">Productos</a>
+                      </li>
                   </ul>
+                  {% endif %}
               </div>
           </nav>
       </header>
