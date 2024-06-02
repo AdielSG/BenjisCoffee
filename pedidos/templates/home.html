@@ -1,22 +1,92 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
-<main class="container py-5">
-    <section class="card card-body">
-        <h1 class="display-1 text-center">Benji's Coffee</h1>
-        <p class="text-center">
-            ¡Bienvenidos a nuestro paraíso de vibras positivas y café delicioso!
-        </p>
-        {% if not user.is_authenticated %}
-        <div class="text-center">
-            <a href="/signin/" class="btn btn-secondary">
-                Iniciar Sesion
-            </a>
-            <a href="/signup/" class="btn btn-dark">
-                Crear Cuenta
+<main class="main-section">
+    <section class="section-1" id="section-1">
+        <div class="section-1-div  responsive-container">
+            <span class="section-1__span-text">¿Quieres llenarte de buenas vibras?</span>
+            <h1 class="section-1__main-heading">Bienvenidos a nuestro <br> paraíso de vibras <br> positivas y café delicioso</h1>
+            <a href="products">
+              <button class="section-1__button-white">Nuestro Menú</button>
             </a>
         </div>
-        {% endif %}
     </section>
+    <section class="section-2 responsive-container" id="section-2">
+        <div class="section-2-left">
+            <video src="{% static '/Videos/Coffee-video.mp4' %}" autoplay muted></video>
+        </div>
+        <div class="section-2-right">
+            <span class="section-2-right__span">Benji's Coffee</span>
+            <h2 class="section-2-right__h2 black-clr">Sobre Nosotros</h2>
+            <h4 class="section-2-right__h4 black-clr">Quienes Somos</h4>
+            <p class="section-2-right__p black-clr">En Benji's Coffee, creemos que una taza de café puede ser mucho más que una simple bebida; puede ser una experiencia que eleva el ánimo y fomenta conexiones. Somos un coffee shop comprometido con infundir buenas vibras en cada gota de cafe, desde el aroma irresistible de nuestros granos de café recién molidos hasta la calidez de nuestras sonrisas.</p>
+        </div>
+    </section>
+    <section class="section-3 responsive-container common-padding" id="section-3">
+        <h2 class="section-3__h2 black-clr text-center">Bebidas Recomendadas</h2>
+        <p class="section-3__p black-clr text-center">Cuales son las mejores segun nuestros clientes</p>
+        <div class="section-3__card-main-div">
+            <div class="section-3__card black-clr">
+                <div class="section-3__coffee-descp">
+                    <h3>Frappe Chocolate</h3>
+                    <p>$100</p>
+                </div>
+                <p>Frappe con un maravilloso sabor a chocolate</p>
+            </div>
+            <div class="section-3__card black-clr">
+                <div class="section-3__coffee-descp">
+                    <h3>Frappe Caramelo</h3>
+                    <p>$100</p>
+                </div>
+                <p>Frappe con un sabor clasico y fabuloso</p>
+            </div>
+            <div class="section-3__card black-clr">
+                <div class="section-3__coffee-descp">
+                    <h3>Vibra Bonito (Moccachino de la casa)</h3>
+                    <p>$49</p>
+                </div>
+                <p>Una liga de cafe y chocolate con la receta de la casa</p>
+            </div>
+        </div>
+    </section>
+    <section class="section-4 responsive-container common-padding" id="section-4">
+        <h2 class="section-4__h2 black-clr text-center">Bébete un cafe con nosotros!</h2>
+        <!-- <p class="section-4__p black-clr text-center">Savor rich aromas for your ultimate coffee experience.</p> -->
+        <div class="section-4__img-div">
+            <img src="../static/img/Collage/foto2.jpg" alt="Section 4 Image 1" width="360px" height="500px">
+            <img src="../static/img/Collage/foto3.jpg" alt="Section 4 Image 2" width="750px" height="650px">
+            <img src="../static/img/Collage/foto1.jpg" alt="Section 4 Image 3" width="360px" height="490px">
+            <img src="../static/img/Collage/foto4.jpg" alt="Section 4 Image 4" width="360px" height="350px">
+            <img src="../static/img/Collage/foto5.jpg" alt="Section 4 Image 5" width="360px" height="350px">
+        </div>
+    </section>
+    
+    
+    <footer class="footer common-padding">
+        <!-- <div class="responsive-container">
+            <div class="footer__about-div">
+                <h4>About Us</h4>
+                <p>Explore our passion-perfected coffee blends and savor the journey with every rich, flavorful cup. Welcome to our coffee family.</p>
+                <p class="footer_copyright-text">Copyright ©2024 <span>Benji's Coffee</span> | All rights reserved</p>
+            </div>
+            <div class="footer__newsletter">
+                <h4>Newsletter</h4>
+                <p>Stay updates with our latest news</p>
+                <div class="footer__search-div">
+                    <input type="search" placeholder="Enter Email">
+                    <button><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+            <div class="footer__follow-us">
+                <h4>Síguenos</h4>
+                <p>Nuestra redes sociales</p>
+                <div class="footer__social-links">
+                    <a href="https://www.instagram.com/elcafedebenji/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div> -->
+    </footer>
 </main>
 {% endblock %}
